@@ -1,0 +1,31 @@
+application:
+  product: b2b #产品
+  module: purchase #模块
+  name: app #子模块名称
+  code: 21014 #子模块ID
+  displayName: 省包采购
+  uploadFilePath:
+
+spring:
+  application:
+    name: ${application.product}-${application.module}-${application.name}
+  redis:
+    host: localhost
+    port: 6379
+    password:
+    database: 1
+    timeout: 300
+    jedis:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
+        max-wait: 1
+
+
+server:
+  port: 21014
+  compression:
+    enabled: true
+    mime-types: application/json,application/xml,text/html,text/xml,text/plain,text/javascript,text/css,application/javascript
+    min-response-size: 256
