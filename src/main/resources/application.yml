@@ -21,6 +21,9 @@ spring:
         max-idle: 8
         min-idle: 0
         max-wait: 1
+  cache:
+    type: REDIS
+    cache-names: redisCache
 
 
 server:

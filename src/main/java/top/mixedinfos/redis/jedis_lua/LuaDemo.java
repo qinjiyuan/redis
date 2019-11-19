@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
+import org.springframework.data.redis.core.script.RedisScript;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.scripting.support.ResourceScriptSource;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,15 +15,15 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.PostConstruct;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/redis")
 public class LuaDemo{
     @Autowired
     private RedisTemplate<String,String> redisTemplate;
-
-
     private DefaultRedisScript<List> getRedisScript;
 
     @PostConstruct
@@ -40,7 +41,7 @@ public class LuaDemo{
      * @return
      */
     @RequestMapping("/doLuaScripts")
-    public List doLuaScripts(@RequestParam String key ,@RequestParam String value){
+    public List doLuaScripts(@RequestParam String key ,@RequestParam String value) {
         /**
          * List设置lua的KEYS
          */
@@ -55,6 +56,17 @@ public class LuaDemo{
     public void addKeyToRedis(@RequestParam("key")String key ,@RequestParam("value")String value){
         redisTemplate.opsForValue().set(key,value);
     }
+
+    @RequestMapping("/testLua")
+    public String testLua(){
+        DefaultRedisScript<String > rs = new DefaultRedisScript<>();
+        rs.setScriptText("return 'Hello Redis'");
+        rs.setResultType(String.class);
+        RedisSerializer<String> redisSerializer = redisTemplate.getStringSerializer();
+        String str = (String)redisTemplate.execute(rs,redisSerializer,redisSerializer,null);
+        return str;
+    }
+
 
 
 
