@@ -30,6 +30,7 @@ public class RedisCacheService {
         user.setName("秦继源");
         user.setHobby("篮球");
         user.setSex("男");
+        user.setId(id);
         return user;
     }
 
